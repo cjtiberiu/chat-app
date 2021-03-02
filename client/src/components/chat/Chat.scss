@@ -1,0 +1,46 @@
+$bg-main: #5b64d6;
+$bg-light: #e2d6f8;
+$bg-gray: #f5f6f8;
+$success: #42b983;
+$danger: #b94242;
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: $bg-gray;
+  height: 100%;
+  margin: 0 !important;
+
+  .chat-wrap {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
+    padding: 2rem 1rem;
+
+    @media (min-width: 800px) {
+      padding: 2rem 6rem;
+      flex-direction: row;
+    }
+  }
+
+  .online-status {
+    display: inline-block;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+  }
+
+  .online {
+    background-color: $success;
+  }
+
+  .offline {
+    background-color: $danger;
+  }
+}

@@ -1,0 +1,9 @@
+export const LOGIN_SUCCES = "LOGIN_SUCCES";
+export const LOGIN_FAIL = "LOGIN_FAIL";
+export const REGISTER_SUCCES = "REGISTER_SUCCES";
+export const REGISTER_FAIL = "REGISTER_FAIL";
+export const SET_ERROR_MSG = "SET_ERROR_MSG";
+export const LOGOUT_SUCCES = "LOGOUT_SUCCES";
+export const UPDATE_PROFILE_SUCCES = "UPDATE_PROFILE_SUCCES";
+
+export const FETCH_CHATS = "FETCH_CHATS";

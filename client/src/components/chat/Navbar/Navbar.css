@@ -1,0 +1,99 @@
+.navbar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  height: 60px;
+  background-color: #5b64d6;
+  padding: 0 10px;
+}
+
+.navbar h2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-item-align: center;
+      align-self: center;
+  color: white;
+}
+
+.navbar .fa-icon {
+  color: white;
+  margin-left: 5px;
+}
+
+.navbar .profile-menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100%;
+  position: relative;
+  cursor: pointer;
+}
+
+.navbar .profile-menu p {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-item-align: center;
+      align-self: center;
+  color: white;
+}
+
+.navbar .profile-menu img {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  color: white;
+  -ms-flex-item-align: center;
+      align-self: center;
+  margin-right: 5px;
+  border-radius: 20px;
+}
+
+.navbar .profile-menu .profile-dropdown {
+  position: absolute;
+  top: 50px;
+  left: -50%;
+  width: 125%;
+  border-radius: 5px;
+  padding: 0 10px;
+  right: 5px;
+  overflow: auto;
+  border: 1px solid #d9d9d9;
+  background-color: white;
+  z-index: 9999;
+}
+
+.navbar .profile-menu .profile-dropdown div {
+  margin: 10px 5px;
+  color: black;
+}
+
+.navbar .profile-menu form .input-field input,
+.navbar .profile-menu form .input-field select {
+  height: 40px;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.navbar .profile-menu .btn-success {
+  background-color: #42b983;
+  border: none;
+  padding: 5px;
+  width: 70px;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+/*# sourceMappingURL=Navbar.css.map */
