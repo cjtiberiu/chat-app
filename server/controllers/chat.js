@@ -4,9 +4,11 @@ const Chat = models.Chat;
 const ChatUser = models.ChatUser;
 const Message = models.Message;
 // allows for conditionals
-const { Op } = require('sequelize');
+const { Op, json } = require('sequelize');
 const { sequelize } = require('../models');
 
+
+// request the user chats data
 exports.index = async (req, res) => {
 
     const user = await User.findOne({
@@ -14,7 +16,7 @@ exports.index = async (req, res) => {
         where: {
             id: req.user.id
         },
-        // get the user chats, possible due to relations
+        // get the user chats, **possible due to relations
         include: [
             {
                 model: Chat,
@@ -30,6 +32,12 @@ exports.index = async (req, res) => {
                     },
                     {
                         model: Message,
+                        include: [
+                            {
+                                model: User,
+                                attributes: { exclude: ['password'] }
+                            }
+                        ],
                         limit: 20,
                         order: [[ 'id', 'DESC']]
                     }
@@ -44,6 +52,8 @@ exports.index = async (req, res) => {
 exports.create = async (req, res) => {
 
     const { friendID } = req.body;
+
+    console.log(friendID);
 
     const t = await sequelize.transaction();
     
@@ -92,25 +102,60 @@ exports.create = async (req, res) => {
 
         await t.commit();
 
-        const newChat = await Chat.findOne({
+        // const newChat = await Chat.findOne({
+        //     where: {
+        //         id: chat.getDataValue('id'),
+        //     },
+        //     include: [
+        //         {
+        //             model: ChatUser,
+        //             where: {
+        //                 [Op.not]: {
+        //                     userID: friendID
+        //                 }
+        //             }
+        //         },
+        //         {
+        //             model: User,
+        //             where: {
+        //                 [Op.not]: {
+        //                     id: req.user.id
+        //                 }
+        //             }
+        //         },
+        //         {
+        //             model: Message,
+        //         }
+        //     ]
+        // })
+
+        const creator = await User.findOne({
             where: {
-                id: chat.getDataValue('id'),
-            },
-            include: [
-                {
-                    model: User,
-                    where: {
-                        [Op.not]: {
-                            id: req.user.id
-                        }
-                    }
-                },
-                {
-                    model: Message,
-                }
-            ]
+                id: req.user.id
+            }
         })
-        return res.json(newChat);
+
+        const partner = await User.findOne({
+            where: {
+                id: friendID
+            }
+        })
+
+        const forCreator = {
+            id: chat.id,
+            type: 'dual',
+            Users: [partner],
+            Messages: []
+        }
+
+        const forReceiver = {
+            id: chat.id,
+            type: 'dual',
+            Users: [creator],
+            Messages: []
+        }
+
+        return res.json([forCreator, forReceiver]);
 
     } catch (err) {
         await t.rollback();
@@ -120,16 +165,23 @@ exports.create = async (req, res) => {
 
 exports.paginateMessages = async (req, res) => {
 
-    const limit = 10;
-    const page = req.query.page || 1;
-    const offset = page > 1 ? page * 10 : 0;
+    const limit = 20;
+    const page = parseInt(req.query.page) || 1;
+    const offset = page > 1 ? (page * limit) - limit : 0;
 
     const messages = await Message.findAndCountAll({
         where: {
-            chatID: req.query.chatID
+            chatID: req.query.id
         },
+        include: [
+            {
+                model: User,
+                attributes: { exclude: ['password'] }
+            }
+        ],
         limit,
-        offset
+        offset,
+        order: [['id', 'DESC']]
     })
 
     const totalPages = Math.ceil(messages.count / limit);
@@ -145,6 +197,17 @@ exports.paginateMessages = async (req, res) => {
     }
 
     return res.json(results)
+}
+
+exports.imageUpload = (req, res) => {
+
+    console.log(req.file);
+
+    if (req.file) {
+        return res.send(req.file.filename);
+    }
+
+    return res.status(500).json({ message: 'Error uploading image' });
 }
 
 exports.deleteChat = async (req, res) => {

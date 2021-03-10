@@ -21,6 +21,10 @@ const Modal = (props) => {
         // if target element contains .modal-close toggle modal
         if (e.target.classList.contains('modal-close')) {
             props.setShowModal(!props.showModal);
+            if (props.setSearchTerm) {
+                props.setSearchTerm('')
+                props.setSuggestions([])
+            }
         }
     }
 

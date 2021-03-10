@@ -32,3 +32,27 @@ exports.update = async (req, res) => {
     }
 }
 
+exports.search = async (req, res) => {
+
+    try {
+
+        const users = await User.findAll({
+            attributes: ['username', 'id'],
+            where: {
+                username: {
+                    [sequelize.Op.substring]: `${req.query.searchTerm}`,
+                },
+                [sequelize.Op.not]: {
+                    id: req.user.id
+                }
+            },
+            limit: 10
+        })
+
+        res.send(users);
+
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+}
+

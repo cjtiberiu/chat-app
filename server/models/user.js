@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         }
 
         const id = this.getDataValue('id');
-        return `${url}/user/${id}/${avatar}`
+        return `${avatar}`
       }
     }
   }, {

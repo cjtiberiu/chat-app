@@ -1,0 +1,31 @@
+.chatter {
+  overflow-y: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  text-align: left;
+  margin-top: 10px;
+}
+
+.chatter h3 {
+  margin: 0 10px 0 0;
+}
+
+.chatter .chatter-info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-right: 10px;
+  min-width: 80px;
+  padding: 10px;
+}
+
+.chatter .chatter-status {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+/*# sourceMappingURL=ChatHeader.css.map */

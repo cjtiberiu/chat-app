@@ -33,7 +33,6 @@
 
 @media (min-width: 800px) {
   .chat-container .chat-wrap {
-    padding: 2rem 6rem;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
         -ms-flex-direction: row;

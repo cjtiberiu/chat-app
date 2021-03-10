@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const http = require('http').createServer(app);
+const http = require('http');
+
 
 const PORT = process.env.PORT || 5000;
 
@@ -15,7 +16,11 @@ app.use(express.static(__dirname + '/uploads'));
 const router = require('./routes');
 app.use(router);
 
+const server = http.createServer(app);
+const socketServer = require('./socket');
+socketServer(server);
 
-http.listen(PORT, () => {
+
+server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 })

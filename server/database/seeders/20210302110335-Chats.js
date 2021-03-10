@@ -18,41 +18,41 @@ module.exports = {
      * }], {});
     */
 
-    const users = await User.findAll({ limit: 2 })
+    const users = await User.findAll({ limit: 3 })
 
     const chat = await Chat.create()
 
     await ChatUser.bulkCreate([
       {
         chatID: chat.getDataValue('id'),
-        userID: users[0].getDataValue('id')
+        userID: users[2].getDataValue('id')
       },
       {
         chatID: chat.getDataValue('id'),
-        userID: users[1].getDataValue('id')
+        userID: users[0].getDataValue('id')
       }
     ])
 
     await Message.bulkCreate([
       {
-        message: 'Hello Friend',
+        message: 'Salut',
         chatID: chat.getDataValue('id'),
-        userID: users[0].getDataValue('id')
+        userID: users[2].getDataValue('id')
       },
       {
         message: 'Hello',
         chatID: chat.getDataValue('id'),
-        userID: users[1].getDataValue('id')
-      },
-      {
-        message: 'Working?',
-        chatID: chat.getDataValue('id'),
         userID: users[0].getDataValue('id')
       },
       {
-        message: 'Yes',
+        message: 'Test?',
         chatID: chat.getDataValue('id'),
-        userID: users[1].getDataValue('id')
+        userID: users[2].getDataValue('id')
+      },
+      {
+        message: 'It works!',
+        chatID: chat.getDataValue('id'),
+        userID: users[0].getDataValue('id')
       }
     ])
   },

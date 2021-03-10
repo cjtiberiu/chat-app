@@ -38,7 +38,9 @@ $danger: #b94242;
       .modal-body {
         padding: 20px;
         background-color: white;
+        position: relative;
         display: flex !important;
+        flex-direction: column;
         justify-content: center;
         text-align: center !important;
 
