@@ -10,7 +10,10 @@ import {
     SENDER_TYPING,
     PAGINATE_MESSAGES,
     INCREMENT_SCROLL,
-    SET_NEW_CHAT
+    SET_NEW_CHAT,
+    ADD_USER_TO_GROUP,
+    LEAVE_CURRENT_CHAT,
+    DELETE_CHAT
 } from '../types';
 
 export const fetchChats = () => dispatch => {
@@ -96,4 +99,16 @@ export const createNewChat = chat => dispatch =>  {
 
     dispatch({ type: SET_NEW_CHAT, payload: chat })
 
+}
+
+export const addUserToGroup = group => dispatch => {
+    dispatch({ type: ADD_USER_TO_GROUP, payload: group })
+}
+
+export const leaveCurrentChat = data => dispatch => {
+    dispatch({ type: LEAVE_CURRENT_CHAT, payload: data })
+}
+
+export const deleteChat = chatID => dispatch => {
+    dispatch({ type: DELETE_CHAT, payload: chatID })
 }

@@ -8,7 +8,10 @@ import {
     setSocket, 
     receivedMessage, 
     senderTyping,
-    createNewChat
+    createNewChat,
+    addUserToGroup,
+    leaveCurrentChat,
+    deleteChat
 } from '../../../store/actions/chat';
 
 export function useSocket(user, dispatch) {
@@ -45,6 +48,19 @@ export function useSocket(user, dispatch) {
 
                 socket.on('new chat', chat => {
                     dispatch( createNewChat(chat) );
+                })
+
+                socket.on('remove user from chat', data => {
+                    data.currentUserID = user.id;
+                    dispatch( leaveCurrentChat(data) );
+                })
+
+                socket.on('delete chat', chatID => {
+                    dispatch( deleteChat(chatID) );
+                })
+
+                socket.on('added-user-to-group', group => {
+                    dispatch( addUserToGroup(group) )
                 })
             })
             .catch(err => console.log(err))

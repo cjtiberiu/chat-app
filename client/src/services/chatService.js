@@ -60,6 +60,36 @@ const chatService = {
             .catch(err => {
                 throw err;
             })
+    },
+    addFriendToChat(userID, chatID) {
+        return API.post('/chats/add-user', { userID, chatID })
+            .then(res => {
+                return res.data;
+                
+            })
+            .catch(err => {
+                throw err;
+            })
+    },
+    leaveCurrentChat(chatID) {
+        return API.post('/chats/leave-chat', { chatID })
+            .then(res => {
+                return res.data;
+                
+            })
+            .catch(err => {
+                throw err;
+            })
+    },
+    deleteCurrentChat(chatID) {
+        return API.delete(`/chats/${chatID}`)
+            .then(res => {
+                return res.data;
+                
+            })
+            .catch(err => {
+                throw err;
+            })
     }
 };
 

@@ -9,7 +9,10 @@ import {
     SENDER_TYPING,
     PAGINATE_MESSAGES,
     INCREMENT_SCROLL,
-    SET_NEW_CHAT
+    SET_NEW_CHAT,
+    ADD_USER_TO_GROUP,
+    LEAVE_CURRENT_CHAT,
+    DELETE_CHAT
 } from '../types';
 
 const INITIAL_STATE = {
@@ -194,7 +197,6 @@ const chatReducer = (state = INITIAL_STATE, action) => {
             }
 
         }
-
         case SENDER_TYPING: {
             if (action.payload.typing) {
                 return {
@@ -209,7 +211,6 @@ const chatReducer = (state = INITIAL_STATE, action) => {
                 }
             }
         }
-
         case PAGINATE_MESSAGES: {
             const { id, messages, pagination } = action.payload;
             let currentChatCopy = { ...state.currentChat };
@@ -239,14 +240,12 @@ const chatReducer = (state = INITIAL_STATE, action) => {
                 currentChat: currentChatCopy
             }
         }
-
         case INCREMENT_SCROLL:
                 return {
                     ...state,
                     scrollBottom: state.scrollBottom + 1,
                     newMessage: { chatID: null, seen: true }
                 }
-
         case SET_NEW_CHAT: {
             const chatsCopy = state.chats.map(el => el);
             chatsCopy.push(action.payload)
@@ -256,6 +255,99 @@ const chatReducer = (state = INITIAL_STATE, action) => {
                 chats: chatsCopy
             }
 
+        }
+        case ADD_USER_TO_GROUP: {
+
+            const { chat, chatters } = action.payload;
+
+            let exists = false;
+
+            const chatsCopy = state.chats.map(chatState => {
+                if (chat.id === chatState.id) {
+                    exists = true;
+
+                    return {
+                        ...chatState,
+                        Users: [...chatState.Users, ...chatters]
+                    }
+                }
+
+                return chatState;
+            })
+
+            if (!exists) {
+                chatsCopy.push(chat);
+            }
+
+            let currentChatCopy = { ...state.currentChat };
+
+            if (Object.keys(currentChatCopy).length > 0) {
+                if (chat.id === currentChatCopy.id) {
+                    currentChatCopy = {
+                        ...state.currentChat,
+                        Users: [ ...state.currentChat.Users, ...chatters]
+                    }
+                }
+            }
+
+            return {
+                ...state,
+                chats: chatsCopy,
+                currentChat: currentChatCopy
+            }
+        }
+        case LEAVE_CURRENT_CHAT: {
+
+            const { chatID, userID, currentUserID } = action.payload;
+
+            if (userID === currentUserID) {
+
+                const chatsCopy = state.chats.filter(chat => chat.id !== chatID);
+
+                return {
+                    ...state,
+                    chats: chatsCopy,
+                    currentChat: state.currentChat.id === chatID ? {} : state.currentChat
+                }
+
+            } else {
+
+                const chatsCopy = state.chats.map(chat => {
+                    if (chatID === chat.id) {
+                        return {
+                            ...chat,
+                            Users: chat.Users.filter(user => user.id === userID)
+                        }
+                    }
+
+                    return chat;
+                })
+
+                let currentChatCopy = { ...state.currentChat };
+
+                if (currentChatCopy.id === chatID) {
+                    currentChatCopy = {
+                        ...currentChatCopy,
+                        Users: currentChatCopy.Users.filter(user => user.id === userID)
+                    }
+                }
+
+                return {
+                    ...state,
+                    chats: chatsCopy,
+                    currentChat: currentChatCopy
+                }
+
+            }
+            
+        }
+        case DELETE_CHAT: {
+            
+            return {
+                ...state,
+                chats: state.chats.filter(chat => chat.id !== action.payload),
+                currentChat: state.currentChat.id === action.payload ? {} : state.currentChat
+            }
         }
         default: 
             return state;

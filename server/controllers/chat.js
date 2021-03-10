@@ -3,6 +3,7 @@ const User = models.User;
 const Chat = models.Chat;
 const ChatUser = models.ChatUser;
 const Message = models.Message;
+
 // allows for conditionals
 const { Op, json } = require('sequelize');
 const { sequelize } = require('../models');
@@ -210,17 +211,137 @@ exports.imageUpload = (req, res) => {
     return res.status(500).json({ message: 'Error uploading image' });
 }
 
-exports.deleteChat = async (req, res) => {
+exports.addUserToGroup = async (req, res) => {
+
+    const { chatID, userID } = req.body;
 
     try {
 
-        await Chat.destroy({
+        // get the existing chat by chatID
+        const chat = await Chat.findOne({
             where: {
-                id: req.params.id
+                id: chatID
+            },
+            include: [
+                {
+                    model: User,
+                },
+                {
+                    model: Message,
+                    include: [
+                        {
+                            model: User
+                        }
+                    ],
+                    limit: 20,
+                    order: [['id', 'DESC']]
+                }
+            ]
+        })
+
+        chat.Messages.reverse();
+
+        // check if user is already in group
+        chat.Users.forEach(user => {
+            if (user.id === userID) {
+                return res.status(403).json({ message: 'User already in the group' });
             }
         })
 
-        return res.json({ message: 'Chat deleted' })
+        // generate the chatuser for this chat
+        await ChatUser.create({ chatID, userID });
+
+        // create the new chat
+        const newChatter = await User.findOne({
+            where: {
+                id: userID
+            }
+        })
+
+        if (chat.type === 'dual') {
+            chat.type = 'group';
+            chat.save();
+        }
+
+        return res.json({chat, newChatter});
+
+    } catch(err) {
+        return res.status(500).json({ message: err.message });
+    }
+}
+
+exports.leaveChat = async (req, res) => {
+
+    const { chatID } = req.body;
+
+    try {
+
+        const chat = await Chat.findOne({
+            where: {
+                id: chatID
+            },
+            include: [
+                {
+                    model: User
+                }
+            ]
+        })
+    
+        if (chat.Users.length === 2) {
+            return res.status(403).json({ message: 'Unable to leave this chat' })
+        } 
+
+        if (chat.Users.length === 3) {
+            chat.type = 'dual';
+            chat.save();
+        }
+
+        await ChatUser.destroy({
+            where: {
+                chatID,
+                userID: req.user.id
+            }
+        })
+
+        await Message.destroy({
+            where: {
+                chatID,
+                userID: req.user.id
+            }
+        })
+
+        const notifyUsers = chat.Users.map(user => user.id);
+
+        return res.json({ chatID: chat.id, userID: req.user.id, currentUserID: req.user.id, notifyUsers })
+
+    } catch(err) {
+
+    }
+
+    
+}
+
+exports.deleteChat = async (req, res) => {
+
+    const { id } = req.params;
+
+    try {
+        const chat = await Chat.findOne({
+            where: {
+                id
+            },
+            include: [
+                {
+                    model: User
+                }
+            ]
+        })
+
+        const notifyUsers = chat.Users.map(user => user.id);
+
+        await chat.destroy();
+
+        return res.json({ chatID: id, notifyUsers })
 
     } catch (err) {
         return res.status(500).json({ message: err.message })
