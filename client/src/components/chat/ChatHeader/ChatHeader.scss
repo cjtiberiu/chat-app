@@ -7,8 +7,9 @@ $danger: #b94242;
 .chatter {
   overflow-y: auto;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   text-align: left;
-  margin-top: 10px;
 
   h3 {
     margin: 0 10px 0 0;

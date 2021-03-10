@@ -31,7 +31,7 @@ const Navbar = () => {
     }
 
     return (
-        <div className='navbar card-shadow'>
+        <div className='navbar'>
             <h2>chat</h2>
             <div className='profile-menu' onClick={() => setShowNav(!showNav)}>
                 <img width='40' height='40' src={user.avatar} alt='profile' />

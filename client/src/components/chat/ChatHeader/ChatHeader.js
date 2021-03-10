@@ -89,12 +89,15 @@ const ChatHeader = ({ chat }) => {
                         )
                     })
                 }
+
+                <FontAwesomeIcon 
+                    onClick={() => setShowChatOptions(!showChatOptions)}
+                    icon={['fas', 'ellipsis-v']} 
+                    className='fa-icon'
+                    style={{ cursor: 'pointer'}}
+                />
             </div>
-            <FontAwesomeIcon 
-                onClick={() => setShowChatOptions(!showChatOptions)}
-                icon={['fas', 'ellipsis-v']} 
-                className='fa-icon' 
-            />
+            
             {
                 showChatOptions ? (
                     <div className='settings'>

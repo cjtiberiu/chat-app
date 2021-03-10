@@ -158,11 +158,13 @@ const MessageInput = ({ chat }) => {
                         </div>
                         : null
                     }
-                    <FontAwesomeIcon 
-                        onClick={() => fileUpload.current.click()}
-                        icon={['fa', 'image']}
-                        className='fa-icon'
-                    />
+                    <div className='upload-circle'>
+                        <FontAwesomeIcon 
+                            onClick={() => fileUpload.current.click()}
+                            icon={['fa', 'image']}
+                            className='fa-icon'
+                        />
+                    </div>
                 </div>
             </div>
             <div className='message-input'>

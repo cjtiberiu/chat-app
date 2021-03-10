@@ -19,7 +19,7 @@ const Chat = (props) => {
 
 
     return (
-        <div className='chat-container'>
+        <div className='chat-container shadow-light'>
             <Navbar />
             <div className='chat-wrap'>
                 <FriendList />

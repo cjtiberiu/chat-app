@@ -58,7 +58,7 @@ const FriendList = () => {
     }
 
     return (
-        <div className='friends shadow-light'>
+        <div className='friends'>
             <div className='title'>
                 <h3 className='m-0'>Friends</h3>
                 <button onClick={() => setShowModal(true)}>ADD</button>
@@ -72,7 +72,7 @@ const FriendList = () => {
                         ? chats.map(chat => {
                             return <Friend click={() => openChat(chat)} chat={chat} key={chat.id} />
                         })
-                        : <p className='no-chat'>No friends added</p>
+                        : <p className='no-chat' style={{ textAlign: 'center'}}>No friends added</p>
                 }
             </div>
 

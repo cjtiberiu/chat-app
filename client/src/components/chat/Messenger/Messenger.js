@@ -16,7 +16,7 @@ const Messenger = () => {
     }
 
     return (
-        <div className='messenger shadow-light'>
+        <div className='messenger'>
             {
                 activeChat() ? (
                     <div className='messenger-wrap'>

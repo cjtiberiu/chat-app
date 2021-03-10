@@ -15,6 +15,13 @@ $danger: #b94242;
 
     .image-upload {
       display: flex;
+
+      .upload-circle {
+        border: 3px solid $bg-main;
+        text-align: center;
+        border-radius: 50%;
+        padding: 3px;
+      }
     }
 
     .message-notification {
